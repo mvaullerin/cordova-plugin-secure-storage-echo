@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-secure-storage-echo",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "Secure storage plugin for iOS & Android",
   "author": "Yiorgis Gozadinos <ggozad@crypho.com>",
   "contributors": [
@@ -27,7 +27,12 @@
   ],
   "cordova": {
     "id": "cordova-plugin-secure-storage-echo",
-    "platforms": ["android", "ios", "wp8", "windows"]
+    "platforms": [
+      "android",
+      "ios",
+      "wp8",
+      "windows"
+    ]
   },
   "keywords": [
     "cordova",

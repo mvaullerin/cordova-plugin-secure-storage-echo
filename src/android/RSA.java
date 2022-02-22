@@ -17,7 +17,7 @@ import java.util.Calendar;
 import javax.crypto.Cipher;
 
 public class RSA extends AbstractRSA {
-
+    private static final String TAG = "SecureStorage";
     @TargetApi(Build.VERSION_CODES.M)
     public boolean isEntryAvailable(String alias) {
         try {
@@ -52,5 +52,10 @@ public class RSA extends AbstractRSA {
                 .build();
         }
         return null;
+    }
+
+    @Override
+    public void log(String message) {
+        Log.e(TAG, message);
     }
 }

@@ -8,11 +8,13 @@ import android.security.KeyPairGeneratorSpec;
 import java.math.BigInteger;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Calendar;
+import android.util.Log;
 
 import javax.crypto.Cipher;
 import javax.security.auth.x500.X500Principal;
 
 public class RSALegacy extends AbstractRSA {
+    private static final String TAG = "SecureStorage";
 
     @Override
     public boolean isEntryAvailable(String alias) {
@@ -40,4 +42,9 @@ public class RSALegacy extends AbstractRSA {
             .setKeyType(getRSAKey())
             .build();
     }
+
+    @Override
+        public void log(String message) {
+            Log.e(TAG, message);
+        }
 }

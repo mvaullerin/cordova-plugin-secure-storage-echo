@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.security.keystore.KeyProperties;
 
+
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyPairGenerator;
@@ -12,8 +13,10 @@ import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.Cipher;
 
+import java.util.Enumeration;
+
 public abstract class AbstractRSA {
-    protected static final String TAG = "SecureStorage";
+
     static final Integer CERT_VALID_YEARS = 100;
     static final String KEYSTORE_PROVIDER = "AndroidKeyStore";
     private final Cipher CIPHER = getCipher();
@@ -24,6 +27,8 @@ public abstract class AbstractRSA {
     boolean encryptionKeysAvailable(String alias) {
         return isEntryAvailable(alias);
     }
+
+    abstract public void log(String msg);
 
     String getRSAKey() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -70,7 +75,13 @@ public abstract class AbstractRSA {
     Key loadKey(int cipherMode, String alias) throws Exception {
         KeyStore keyStore = KeyStore.getInstance(KEYSTORE_PROVIDER);
         keyStore.load(null, null);
+        log("ALIASES START");
+         for (Enumeration<String> e = keyStore.aliases(); e.hasMoreElements();){
+            log(e.nextElement());
+         }
 
+        log("ALIASES END");
+        log(keyStore.aliases().toString());
         if (!keyStore.containsAlias(alias)) {
             throw new Exception("KeyStore doesn't contain alias: " + alias);
         }

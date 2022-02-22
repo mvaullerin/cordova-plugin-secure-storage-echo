@@ -105,6 +105,7 @@ public class SecureStorage extends CordovaPlugin {
                 callbackContext.error(MSG_DEVICE_NOT_SECURE);
             } else if (!rsa.encryptionKeysAvailable(alias)) {
                 // Encryption Keys aren't available, proceed to generate them
+                Log.e(TAG, "ENCRYPTION KEYS IS NOT AVAILABLE");
                 Integer userAuthenticationValidityDuration = options.optInt("userAuthenticationValidityDuration", DEFAULT_AUTHENTICATION_VALIDITY_TIME);
                 generateKeysContext = callbackContext;
                 generateEncryptionKeys(userAuthenticationValidityDuration);
@@ -112,6 +113,7 @@ public class SecureStorage extends CordovaPlugin {
                     unlockCredentialsLegacy();
                 }
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && rsa.userAuthenticationRequired(alias)) {
+                Log.e(TAG, "SHOULD UNLOCK CREDENTIALS WHY ? WE DONT KNOW");
                 // User has to confirm authentication via device credentials.
                 String title = options.optString("unlockCredentialsTitle", null);
                 String description = options.optString("unlockCredentialsDescription", null);
@@ -119,6 +121,7 @@ public class SecureStorage extends CordovaPlugin {
                 unlockCredentialsContext = callbackContext;
                 unlockCredentials(title, description);
             } else {
+                Log.e(TAG, "ELSE IT SHOULD WORK");
                 initSuccess(callbackContext);
             }
 
@@ -275,10 +278,14 @@ public class SecureStorage extends CordovaPlugin {
                         String alias = service2alias(INIT_SERVICE);
                         SharedPreferencesHandler storage = getStorage(INIT_SERVICE);
                         //Solves Issue #96. The RSA key may have been deleted by changing the lock type.
+                        Log.e(TAG, "GENERATE ENCRYPTIONKEYS : GET STORAGE" );
                         getStorage(INIT_SERVICE).clear();
+                        Log.e(TAG, "ENCRYPTION KEYS : CREATE KEYPAIR");
                         rsa.createKeyPair(getContext(), alias, userAuthenticationValidityDuration);
+                        Log.e(TAG, "ENCRYPTION KEYS : KEYPAIR GENERATED");
                         generateKeysContext.success();
                     } catch (Exception e) {
+                        Log.e(TAG, "GENERATION KEYPAIR FAILEDD");
                         Log.e(TAG, MSG_KEYS_FAILED, e);
                         generateKeysContext.error(MSG_KEYS_FAILED + e.getMessage());
                     } finally {
